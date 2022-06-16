@@ -41,10 +41,10 @@ void* busca(void* args){
     while(getline(&linha, &len, fp) != -1){
         //verificar se a substring esta na linha
         if (strstr(linha, a->palavra) != NULL){
-            printf("Thread: %ld, %s encontrada na linha %d\n", a->tid, a->palavra, line_count);
+            printf("Thread: %ld, a string %s foi encontrada na linha %d, do arquivo %s.\n", a->tid, a->palavra, line_count, a->filename);
             end = clock();
             total_t = (double)(end - start)/CLOCKS_PER_SEC;
-            printf("Thread: %ld, string encontrada em %f\n", a->tid, total_t);
+            printf("Thread: %ld, a string foi encontrada em %f\n", a->tid, total_t);
             if(fp){
                 fclose(fp);
             }
@@ -58,7 +58,7 @@ void* busca(void* args){
         fclose(fp);
     }
     
-    printf("Thread: %ld, string %s nao foi encontrada\n", a->tid, a->palavra);
+    printf("Thread: %ld, a string %s nao foi encontrada no arquivo %s.\n", a->tid, a->palavra, a->filename);
     
     return (void*) 0;
 
@@ -74,16 +74,22 @@ int main(int argc, char *argv[])
         exit(1);
     }
 
-    struct args_t a1, a2;
+    struct args_t a1, a2, a3, a4;
       
-    a1.filename = "File1_test2.txt";
-    a1.palavra = a2.palavra = argv[1];
-    a2.filename = "File2_test2.txt";
+    a1.palavra = a2.palavra = a3.palavra = a4.palavra = argv[1];
+    a1.filename = "File1_test3.txt";
+    a2.filename = "File2_test3.txt";
+    a3.filename = "File3_test3.txt";
+    a4.filename = "File4_test3.txt";
 
     pthread_create(&a1.tid, NULL, busca, (void*) &a1);
     pthread_create(&a2.tid, NULL, busca, (void*) &a2);
+    pthread_create(&a3.tid, NULL, busca, (void*) &a3);
+    pthread_create(&a4.tid, NULL, busca, (void*) &a4);
     pthread_join(a1.tid, NULL);
     pthread_join(a2.tid, NULL);
+    pthread_join(a3.tid, NULL);
+    pthread_join(a4.tid, NULL);
 
     
     

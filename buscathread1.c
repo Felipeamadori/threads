@@ -1,3 +1,8 @@
+/* 
+Trabalho de threads elaborado para a disciplina de Sistemas Operacionais
+Aluno: Felipe Amadori Machado
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -30,7 +35,7 @@ void* busca(void* arg){
     while(getline(&linha, &len, fp) != -1){
         //verificar se a substring esta na linha
         if (strstr(linha, palavra) != NULL){
-            printf("%s encontrada na linha %d\n", palavra, line_count);
+            printf("%s encontrada na linha %d do arquivo %s\n", palavra, line_count, FILENAME);
             end = clock();
             total_t = (double)(end - start)/CLOCKS_PER_SEC;
             printf("String encontrada em %f\n", total_t);
@@ -47,7 +52,7 @@ void* busca(void* arg){
         fclose(fp);
     }
     
-    printf("String %s nao foi encontrada\n", palavra);
+    printf("String %s nao foi encontrada no arquivo %s\n", palavra, FILENAME);
     
     return (void*) 0;
 
